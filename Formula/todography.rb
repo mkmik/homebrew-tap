@@ -1,8 +1,8 @@
 class Todography < Formula
   desc "Checks and queries a map of components kept as Markdown files"
   homepage "https://github.com/mkmik/todography"
-  url "https://github.com/mkmik/todography/archive/refs/tags/v0.2.0.tar.gz"
-  sha256 "f4b077231744fcce5737836acb9ff61102eb54b16bd7704a15a2b1f821ac5499"
+  url "https://github.com/mkmik/todography/archive/refs/tags/v0.7.0.tar.gz"
+  sha256 "a90b1355bbfff95cecd6ff7ff8672fdeacf2ff6f7ec368a22931e8b112195f5a"
   license "MIT"
   head "https://github.com/mkmik/todography.git", branch: "main"
 
