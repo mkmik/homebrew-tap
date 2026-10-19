@@ -1,0 +1,29 @@
+name: bump
+
+# Polls each project's latest release and points its formula at it. Runs from
+# here, with this repo's own token, so no project needs a secret to push to
+# the tap.
+
+on:
+  schedule: [{ cron: "17 * * * *" }]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  todography:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - run: |
+          tag=$(gh release view -R mkmik/todography --json tagName -q .tagName)
+          url="https://github.com/mkmik/todography/archive/refs/tags/$tag.tar.gz"
+          grep -qF "$url" Formula/todography.rb && exit 0
+          sha=$(curl -sSfL "$url" | sha256sum | cut -d' ' -f1)
+          sed -i -E "s|^  url \".*\"|  url \"$url\"|; s|^  sha256 \".*\"|  sha256 \"$sha\"|" Formula/todography.rb
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -am "todography ${tag#v}"
+          git push
+        env:
+          GH_TOKEN: ${{ github.token }}
